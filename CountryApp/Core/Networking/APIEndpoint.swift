@@ -8,22 +8,23 @@
 import Foundation
 
 enum APIEndpoint: APIEndpointContract {
-    case countries(name: String)
+    case search(name: String)
+    case country(code: String)
+    
     
     var path: String {
         switch self {
-        case .countries(let name):
+        case .search(let name):
             return "/name/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
+        case .country(code: let code):
+            return "/alpha/\(code.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
+
         }
     }
     
     var queryItems: [URLQueryItem]? {
-        switch self {
-        case .countries:
-            let fields = "name,capital,currencies,flags,cca3"
-            return [URLQueryItem(name: "fields", value: fields)]
-        }
-        
+        let fields = "name,capital,currencies,flags,cca3"
+        return [URLQueryItem(name: "fields", value: fields)]
     }
     
     var urlRequest: URLRequest? {
