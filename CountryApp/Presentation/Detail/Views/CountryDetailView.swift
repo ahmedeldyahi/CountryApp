@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CountryDetailView: View {
     let country: Country
+    private var viewModel: CountryDetailViewModel {
+        CountryDetailViewModel(country: country)
+    }
     
     var body: some View {
             ScrollView {
@@ -23,6 +26,8 @@ struct CountryDetailView: View {
         .navigationTitle(country.name)
         .navigationBarTitleDisplayMode(.inline)
     }
+    
+    
     
     private var mapView: some View {
             CountryMapView(lat: country.latitude ?? 0, long: country.longitude ?? 0, countryName: country.name)
@@ -68,63 +73,8 @@ struct CountryDetailView: View {
             .background(Color(.systemGray6))
             
             VStack(spacing: 16) {
-                DetailRow(
-                    icon: "building.2.fill",
-                    label: "Capital",
-                    value: country.capital,
-                    color: .blue
-                )
-                
-                DetailRow(
-                    icon: "dollarsign.circle.fill",
-                    label: "Currency",
-                    value: country.currency,
-                    color: .green
-                )
-                
-                if let region = country.region {
-                    DetailRow(
-                        icon: "globe",
-                        label: "Region",
-                        value: region,
-                        color: .orange
-                    )
-                }
-                
-                if let subregion = country.subregion {
-                    DetailRow(
-                        icon: "map.fill",
-                        label: "Subregion",
-                        value: subregion,
-                        color: .purple
-                    )
-                }
-                
-                if let population = country.population {
-                    DetailRow(
-                        icon: "person.3.fill",
-                        label: "Population",
-                        value: population.formatted(),
-                        color: .pink
-                    )
-                }
-                
-                if let area = country.area {
-                    DetailRow(
-                        icon: "square.fill",
-                        label: "Area",
-                        value: "\(area.formatted()) km²",
-                        color: .teal
-                    )
-                }
-                
-                if let timezones = country.timezones {
-                    DetailRow(
-                        icon: "clock.fill",
-                        label: "Timezones",
-                        value: timezones.joined(separator: ", "),
-                        color: .indigo
-                    )
+                ForEach(viewModel.detailItems) { item in
+                    DetailRow(icon: item.icon, label: item.label, value: item.value, color: item.color)
                 }
             }
             .padding()
@@ -133,36 +83,6 @@ struct CountryDetailView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
         .padding(.horizontal, 4)
-    }
-}
-
-private struct DetailRow: View {
-    let icon: String
-    let label: String
-    let value: String
-    let color: Color
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundColor(color)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(label)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
-                Text(value)
-                    .font(.body)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            
-            Spacer()
-        }
     }
 }
 
@@ -193,3 +113,5 @@ struct CountryDetailView_Previews: PreviewProvider {
         .previewDisplayName("Detail View")
     }
 }
+
+
