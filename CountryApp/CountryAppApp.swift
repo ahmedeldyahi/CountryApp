@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CountryAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView(viewModel: MainViewModel())
+                .globalErrorToast()
         }
+        .modelContainer(for: [CachedCountry.self])
     }
 }
