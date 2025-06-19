@@ -18,6 +18,14 @@ class CachedCountry {
     var flagURL: String
     var code: String
 
+    var region: String?
+    var subregion: String?
+    var population: Int?
+    var area: Double?
+    var timezones: [String]?
+    var latitude: Double?
+    var longitude: Double?
+
     init(from country: Country) {
         self.id = country.id
         self.name = country.name
@@ -25,6 +33,14 @@ class CachedCountry {
         self.currency = country.currency
         self.flagURL = country.flagURL
         self.code = country.code
+
+        self.region = country.region
+        self.subregion = country.subregion
+        self.population = country.population
+        self.area = country.area
+        self.timezones = country.timezones
+        self.latitude = country.latitude
+        self.longitude = country.longitude
     }
 
     func toCountry() -> Country {
@@ -34,13 +50,13 @@ class CachedCountry {
             currency: currency,
             flagURL: flagURL,
             code: code,
-            region: nil,
-            subregion: nil,
-            population: nil,
-            area: nil,
-            timezones: nil,
-            latitude: nil,
-            longitude: nil
+            region: region,
+            subregion: subregion,
+            population: population,
+            area: area,
+            timezones: timezones,
+            latitude: latitude,
+            longitude: longitude
         )
     }
 }
