@@ -20,7 +20,10 @@ struct MainView: View {
                 addButton
             }
             .sheet(isPresented: $showSearch) {
-                Text("Search")
+                CountrySearchView { selected in
+                    viewModel.addCountry(selected)
+                    showSearch = false
+                }
             }
             .navigationDestination(for: Country.self) { country in
                 CountryDetailView(country: country)
