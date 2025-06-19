@@ -25,7 +25,7 @@ class MainViewModel: ObservableObject {
         }
     }
     
-    private func loadInitialCountry() async {
+     func loadInitialCountry() async {
         let countries = await loadInitialCountries.execute()
         await MainActor.run {
             self.countries = countries

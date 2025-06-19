@@ -15,17 +15,18 @@ protocol LocationManagerContract {
 }
 
 final class LocationManager: NSObject, CLLocationManagerDelegate, LocationManagerContract {
-    private let locationManager = CLLocationManager()
+    private let locationManager: CLLocationManager
     private var continuation: CheckedContinuation<String?, Never>?
     private let geocoder = CLGeocoder()
     
-    override init() {
+    init(manager: CLLocationManager = CLLocationManager()) {
+        self.locationManager = manager
         super.init()
-        locationManager.delegate = self
+        self.locationManager.delegate = self
     }
 
     func getCountryCode() async -> String? {
-        let authStatus = CLLocationManager.authorizationStatus()
+        let authStatus = locationManager.authorizationStatus
         
         switch authStatus {
         case .notDetermined:

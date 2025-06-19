@@ -33,7 +33,6 @@ struct LoadInitialCountriesUseCase: LoadInitialCountriesUseCaseContract {
         do {
             if let country = try await countryService.fetchCountry(by: code) {
                 let result = [country]
-                await countryCache.saveCountries(result)
                 return result
             }
         } catch {
