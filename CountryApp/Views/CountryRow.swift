@@ -65,7 +65,3 @@ struct CountryRow: View {
     }
 }
 
-
-#Preview {
-    CountryRow(country: Country(name: "Egypt", capital: "Cairo", currency: "Pound", flagURL: "ss", code: ""))
-}

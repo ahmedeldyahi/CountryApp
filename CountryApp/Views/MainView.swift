@@ -23,7 +23,7 @@ struct MainView: View {
                 Text("Search")
             }
             .navigationDestination(for: Country.self) { country in
-                Text(country.name)
+                CountryDetailView(country: country)
             }
         }
     }

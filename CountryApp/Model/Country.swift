@@ -12,6 +12,14 @@ struct Country: Codable, Identifiable, Equatable, Hashable {
     let currency: String
     let flagURL: String
     let code: String
+
+    let region: String?
+    let subregion: String?
+    let population: Int?
+    let area: Double?
+    let timezones: [String]?
+    let latitude: Double?
+    let longitude: Double?
 }
 
 
@@ -26,16 +34,34 @@ struct CountryModel: Decodable {
     let flags: Flags
     let cca3: String
 
+    
+    let region: String?
+    let subregion: String?
+    let population: Int?
+    let area: Double?
+    let timezones: [String]?
+    let latlng: [Double]?
+    
     func toCountry() -> Country? {
         guard let capital = capital?.first,
               let currency = currencies?.first?.value.name else { return nil }
+        
+        let latitude = latlng?.first
+        let longitude = latlng?.count ?? 0 > 1 ? latlng?[1] : nil
 
         return Country(
             name: name.common,
             capital: capital,
             currency: currency,
             flagURL: flags.png,
-            code: cca3
+            code: cca3,
+            region: region,
+            subregion: subregion,
+            population: population,
+            area: area,
+            timezones: timezones,
+            latitude: latitude,
+            longitude: longitude
         )
     }
 }

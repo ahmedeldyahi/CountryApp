@@ -23,7 +23,7 @@ enum APIEndpoint: APIEndpointContract {
     }
     
     var queryItems: [URLQueryItem]? {
-        let fields = "name,capital,currencies,flags,cca3"
+        let fields = "name,capital,currencies,flags,cca3,region,subregion,population,area,timezones,latlng"
         return [URLQueryItem(name: "fields", value: fields)]
     }
     
