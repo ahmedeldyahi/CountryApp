@@ -7,40 +7,43 @@
 
 import Combine
 import SwiftUI
+
 class MainViewModel: ObservableObject {
     @Published var countries: [Country] = []
-    private let locationManager:LocationManagerContract
-    private let countryService: CountryServiceContract
+    private let loadInitialCountries: LoadInitialCountriesUseCaseContract
+    private let countryCache: CountryCacheContract
     
     init(
-        countryService: CountryServiceContract = CountryServiceImpl(),
-        locationManager:LocationManagerContract = LocationManager()
+        loadInitialCountries: LoadInitialCountriesUseCaseContract = LoadInitialCountriesUseCase(),
+        countryCache: CountryCacheContract = CountryCacheService.shared
     ) {
-        self.countryService = countryService
-        self.locationManager = locationManager
+        self.loadInitialCountries = loadInitialCountries
+        self.countryCache = countryCache
         
         Task {
             await loadInitialCountry()
         }
     }
     
-    func loadInitialCountry() async {
-        let code = await locationManager.getCountryCode() ?? "US"
-        do {
-            if let country = try await countryService.fetchCountry(by: code) {
-                await MainActor.run { self.countries = [country] }
-            }
-        } catch {
-            print("Error loading initial country: \(error)")
+    private func loadInitialCountry() async {
+        let countries = await loadInitialCountries.execute()
+        await MainActor.run {
+            self.countries = countries
         }
     }
     
     func addCountry(_ country: Country) {
         guard countries.count < 5, !countries.contains(country) else { return }
         countries.append(country)
+        Task {
+            await countryCache.saveCountries(countries)
+        }
     }
     
     func removeCountry(atOffsets offsets: IndexSet) {
         countries.remove(atOffsets: offsets)
+        Task {
+            await countryCache.saveCountries(countries)
+        }
     }
 }

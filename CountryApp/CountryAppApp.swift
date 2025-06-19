@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CountryAppApp: App {
@@ -13,5 +14,6 @@ struct CountryAppApp: App {
         WindowGroup {
             MainView(viewModel: MainViewModel())
         }
+        .modelContainer(for: [CachedCountry.self])
     }
 }
