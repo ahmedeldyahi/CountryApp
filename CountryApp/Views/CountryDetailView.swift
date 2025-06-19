@@ -15,6 +15,7 @@ struct CountryDetailView: View {
                 VStack(spacing: 30) {
                     mapView
                     infoCard
+                    .padding(.horizontal)
                 }
                 .padding(.bottom, 30)
             }
