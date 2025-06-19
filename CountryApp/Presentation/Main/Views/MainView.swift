@@ -32,6 +32,16 @@ struct MainView: View {
     }
     
     private var countryListView: some View {
+        Group {
+            if viewModel.countries.isEmpty {
+                emptyStateView
+            } else {
+                listView
+            }
+        }
+    }
+    
+    private var listView: some View {
         List {
             ForEach(viewModel.countries) { country in
                 NavigationLink(value: country) {
@@ -41,6 +51,24 @@ struct MainView: View {
             .onDelete(perform: viewModel.removeCountry)
         }
         .listStyle(.insetGrouped)
+    }
+    
+    private var emptyStateView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "globe")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+            
+            Text("No Countries Added")
+                .font(.title2)
+                .bold()
+            
+            Text("Add your first country using the + button")
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .frame(maxHeight: .infinity)
     }
     
     private var addButton: some View {
