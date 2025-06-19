@@ -13,6 +13,7 @@ struct CountryAppApp: App {
     var body: some Scene {
         WindowGroup {
             MainView(viewModel: MainViewModel())
+                .globalErrorToast()
         }
         .modelContainer(for: [CachedCountry.self])
     }
